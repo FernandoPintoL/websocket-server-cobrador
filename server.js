@@ -61,8 +61,8 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Puerto del servidor
-const PORT = process.env.WEBSOCKET_PORT || 3001;
+// Puerto del servidor - Railway usa la variable PORT automáticamente
+const PORT = process.env.PORT || process.env.WEBSOCKET_PORT || 3001;
 
 // Almacenar conexiones activas por usuario
 const activeUsers = new Map();
@@ -328,18 +328,30 @@ app.post('/notify', (req, res) => {
 
 // Iniciar servidor
 server.listen(PORT, '0.0.0.0', () => {
-    const localIP = getLocalIP();
     console.log(`🚀 Servidor WebSocket corriendo en puerto ${PORT}`);
-    console.log(`🌐 Cliente URL permitida: ${process.env.CLIENT_URL || "http://localhost:3000"}`);
-    console.log(`📱 Accesible desde dispositivos móviles en: http://${localIP}:${PORT}`);
-    console.log('');
-    console.log('📋 URLs de prueba:');
-    console.log(`   Estado: http://${localIP}:${PORT}/health`);
-    console.log(`   Pruebas: http://${localIP}:${PORT}/test.html`);
-    console.log(`   Usuarios activos: http://${localIP}:${PORT}/active-users`);
-    console.log('');
-    console.log('📲 Configuración para Flutter:');
-    console.log(`   _wsService.configureServer(url: 'http://${localIP}:${PORT}');`);
+    console.log(`🌐 Entorno: ${process.env.NODE_ENV || 'development'}`);
+
+    if (process.env.NODE_ENV === 'production') {
+        console.log(`🌐 WebSocket URL: ${process.env.WEBSOCKET_URL}`);
+        console.log(`🌐 Cliente URL: ${process.env.CLIENT_URL}`);
+        console.log('');
+        console.log('📋 URLs de producción:');
+        console.log(`   Health: ${process.env.WEBSOCKET_URL}/health`);
+        console.log(`   Pruebas: ${process.env.WEBSOCKET_URL}/test.html`);
+        console.log(`   Usuarios: ${process.env.WEBSOCKET_URL}/active-users`);
+    } else {
+        const localIP = getLocalIP();
+        console.log(`🌐 Cliente URL permitida: ${process.env.CLIENT_URL || "http://localhost:3000"}`);
+        console.log(`📱 Accesible desde dispositivos móviles en: http://${localIP}:${PORT}`);
+        console.log('');
+        console.log('📋 URLs de prueba:');
+        console.log(`   Estado: http://${localIP}:${PORT}/health`);
+        console.log(`   Pruebas: http://${localIP}:${PORT}/test.html`);
+        console.log(`   Usuarios activos: http://${localIP}:${PORT}/active-users`);
+        console.log('');
+        console.log('📲 Configuración para Flutter:');
+        console.log(`   _wsService.configureServer(url: 'http://${localIP}:${PORT}');`);
+    }
     console.log('');
 });
 
