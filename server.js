@@ -17,20 +17,31 @@ const app = express();
 const server = http.createServer(app);
 
 // Configurar CORS para Socket.IO - Compatible con móviles
+const corsOrigins = process.env.NODE_ENV === 'production'
+    ? [
+        process.env.CLIENT_URL,
+        process.env.MOBILE_CLIENT_URL,
+        process.env.WEBSOCKET_URL,
+        "capacitor://localhost",
+        "ionic://localhost",
+        "http://localhost"
+    ]
+    : [
+        process.env.CLIENT_URL || "http://localhost:3000",
+        process.env.MOBILE_CLIENT_URL || "http://192.168.5.44:3000",
+        // Permitir cualquier IP local para desarrollo
+        /^http:\/\/192\.168\.\d+\.\d+:\d+$/,
+        /^http:\/\/10\.\d+\.\d+\.\d+:\d+$/,
+        /^http:\/\/172\.(1[6-9]|2\d|3[01])\.\d+\.\d+:\d+$/,
+        // Para aplicaciones móviles (Flutter/React Native)
+        "capacitor://localhost",
+        "ionic://localhost",
+        "http://localhost",
+    ];
+
 const io = new socketIo(server, {
     cors: {
-        origin: [
-            process.env.CLIENT_URL || "http://localhost:3000",
-            process.env.MOBILE_CLIENT_URL || "http://192.168.5.44:3000",
-            // Permitir cualquier IP local para desarrollo
-            /^http:\/\/192\.168\.\d+\.\d+:\d+$/,
-            /^http:\/\/10\.\d+\.\d+\.\d+:\d+$/,
-            /^http:\/\/172\.(1[6-9]|2\d|3[01])\.\d+\.\d+:\d+$/,
-            // Para aplicaciones móviles (Flutter/React Native)
-            "capacitor://localhost",
-            "ionic://localhost",
-            "http://localhost",
-        ],
+        origin: corsOrigins,
         methods: ["GET", "POST"],
         credentials: true,
         allowEIO3: true
@@ -45,18 +56,7 @@ const io = new socketIo(server, {
 
 // Middleware
 app.use(cors({
-    origin: [
-        process.env.CLIENT_URL || "http://localhost:3000",
-        process.env.MOBILE_CLIENT_URL || "http://192.168.5.44:3000",
-        // Permitir cualquier IP local para desarrollo
-        /^http:\/\/192\.168\.\d+\.\d+:\d+$/,
-        /^http:\/\/10\.\d+\.\d+\.\d+:\d+$/,
-        /^http:\/\/172\.(1[6-9]|2\d|3[01])\.\d+\.\d+:\d+$/,
-        // Para aplicaciones móviles
-        "capacitor://localhost",
-        "ionic://localhost",
-        "http://localhost",
-    ],
+    origin: corsOrigins,
     credentials: true
 }));
 app.use(express.json());
