@@ -1,16 +1,23 @@
-const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
-const cors = require('cors');
-const path = require('path');
-const { getLocalIP, generateConfig } = require('./network-utils');
-require('dotenv').config();
+/* eslint-env node */
+import express from 'express';
+import http from 'http';
+import { Server as socketIo } from 'socket.io';
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { getLocalIP } from './network-utils.js';
+import dotenv from 'dotenv';
+dotenv.config();
+
+// Define __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const server = http.createServer(app);
 
 // Configurar CORS para Socket.IO - Compatible con móviles
-const io = socketIo(server, {
+const io = new socketIo(server, {
     cors: {
         origin: [
             process.env.CLIENT_URL || "http://localhost:3000",
