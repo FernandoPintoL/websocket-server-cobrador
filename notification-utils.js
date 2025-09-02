@@ -66,8 +66,28 @@ export function notifyAll(io, event, data) {
  * @returns {Object} Objeto con el mensaje formateado
  */
 export function formatNotification(message, data = {}) {
+    // Asegurar estructura estándar: title, message, type, timestamp
+    const normalized = typeof data === 'object' && data !== null ? { ...data } : {};
+
+    // Title por defecto si no viene
+    if (!normalized.title || typeof normalized.title !== 'string' || normalized.title.trim() === '') {
+        // Inferir por type si existe; si no, usar genérico
+        const inferredType = (normalized.type || '').toString();
+        let defaultTitle = 'Notificación';
+        if (inferredType.includes('payment')) defaultTitle = 'Pago';
+        else if (inferredType.includes('credit')) defaultTitle = 'Crédito';
+        else if (inferredType.includes('cobrador')) defaultTitle = 'Cobrador';
+        else if (inferredType.includes('system') || inferredType.includes('general')) defaultTitle = 'Sistema';
+        normalized.title = defaultTitle;
+    }
+
+    // Type por defecto si no viene
+    if (!normalized.type || typeof normalized.type !== 'string' || normalized.type.trim() === '') {
+        normalized.type = 'general';
+    }
+
     return {
-        ...data,
+        ...normalized,
         message,
         timestamp: new Date().toISOString()
     };
