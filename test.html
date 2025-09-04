@@ -94,6 +94,7 @@
         <select id="userType">
             <option value="client">Cliente</option>
             <option value="cobrador">Cobrador</option>
+            <option value="manager">Manager</option>
             <option value="admin">Admin</option>
         </select>
         <input type="text" id="userName" placeholder="Nombre de Usuario" value="Usuario Test">
@@ -196,9 +197,33 @@
             socket.on('new_credit_notification', (notification) => {
                 addMessage(`💰 Nueva notificación de crédito: ${notification.title} - ${notification.message}`, 'notification');
             });
+            socket.on('credit_lifecycle_update', (data) => {
+                addMessage(`🏦 Actualización de crédito (${data.action}): ${JSON.stringify(data)}`, 'notification');
+            });
+            socket.on('credit_pending_approval', (data) => {
+                addMessage(`⏳ Crédito pendiente de aprobación: ${JSON.stringify(data)}`, 'notification');
+            });
+            socket.on('credit_decision', (data) => {
+                addMessage(`⚖️ Decisión de crédito (${data.action}): ${JSON.stringify(data)}`, 'notification');
+            });
+            socket.on('credit_delivered_notification', (data) => {
+                addMessage(`🚚 Crédito entregado: ${JSON.stringify(data)}`, 'notification');
+            });
+            socket.on('credit_approved', (data) => {
+                addMessage(`✅ Crédito aprobado (evento dedicado): ${JSON.stringify(data)}`,'notification');
+            });
+            socket.on('credit_attention_required', (data) => {
+                addMessage(`🔔 Crédito requiere atención: ${JSON.stringify(data)}`, 'notification');
+            });
 
             socket.on('payment_updated', (payment) => {
                 addMessage(`💳 Pago actualizado: ${JSON.stringify(payment)}`, 'notification');
+            });
+            socket.on('payment_received', (payment) => {
+                addMessage(`💳 Pago recibido: ${JSON.stringify(payment)}`, 'notification');
+            });
+            socket.on('cobrador_payment_received', (payment) => {
+                addMessage(`📥 Pago de cobrador recibido: ${JSON.stringify(payment)}`, 'notification');
             });
 
             socket.on('route_updated', (route) => {
@@ -342,6 +367,7 @@
 
         // Conectar automáticamente al cargar la página
         window.onload = function () {
+            updateServerInfo();
             connectSocket();
             addMessage('🚀 Página cargada. Conectando...', 'info');
         };
