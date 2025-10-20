@@ -1,9 +1,9 @@
 import os from 'os';
 
 /**
- * Detectar IP local automáticamente
+ * Detectar IP local automáticamente (fallback)
  */
-export function getLocalIP() {
+function autoDetectLocalIP() {
     const interfaces = os.networkInterfaces();
 
     for (const name of Object.keys(interfaces)) {
@@ -20,6 +20,27 @@ export function getLocalIP() {
     }
 
     return 'localhost';
+}
+
+/**
+ * Obtener IP local del servidor
+ * Prioridad: 1) Variable LOCAL_IP del .env, 2) Detección automática
+ */
+export function getLocalIP() {
+    // Primero intenta leer desde .env
+    const envIP = process.env.LOCAL_IP;
+
+    if (envIP && envIP.trim() !== '') {
+        console.log(`📌 Usando IP configurada en .env: ${envIP}`);
+        return envIP.trim();
+    }
+
+    // Si no está en .env, detecta automáticamente
+    const autoIP = autoDetectLocalIP();
+    console.log(`🔍 IP detectada automáticamente: ${autoIP}`);
+    console.log(`💡 Tip: Configura LOCAL_IP en .env para fijar la IP manualmente`);
+
+    return autoIP;
 }
 
 /**

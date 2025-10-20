@@ -58,6 +58,7 @@ if (process.env.SSL_CERT_PATH && process.env.SSL_KEY_PATH) {
 ## 🐳 Despliegue con Docker
 
 ### Dockerfile
+
 ```dockerfile
 FROM node:18-alpine
 
@@ -71,7 +72,7 @@ COPY package*.json ./
 RUN npm ci --only=production
 
 # Copiar código fuente
-COPY . .
+COPY .. .
 
 # Crear usuario no-root
 RUN addgroup -g 1001 -S nodejs
