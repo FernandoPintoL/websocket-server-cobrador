@@ -25,6 +25,19 @@ import { getLocalIP } from './src/utils/network-utils.js';
 // Cargar variables de entorno
 dotenv.config();
 
+// Validar variables críticas en producción
+if (process.env.NODE_ENV === 'production') {
+    if (!process.env.WS_SECRET) {
+        console.error('❌ FATAL: WS_SECRET no configurado en producción');
+        console.error('   El servidor NO puede autenticar requests desde Laravel');
+        process.exit(1);
+    }
+    if (!process.env.CLIENT_URL) {
+        console.warn('⚠️  WARNING: CLIENT_URL no configurado. CORS puede fallar.');
+    }
+    console.log('✅ Variables críticas validadas');
+}
+
 // Define __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

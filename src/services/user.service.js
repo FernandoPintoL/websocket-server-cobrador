@@ -1,4 +1,5 @@
 import activeUsersRepository from '../repositories/activeUsers.repository.js';
+import socketRepository from '../repositories/socket.repository.js';
 
 class UserService {
     // Obtener todos los usuarios activos
@@ -35,13 +36,23 @@ class UserService {
         return process.uptime();
     }
 
-    // Obtener información de salud del servidor
+    // Obtener información de salud del servidor (mejorado para producción)
     getHealthInfo() {
+        const socketIOReady = socketRepository.io !== null;
+        const memoryUsage = process.memoryUsage();
+
         return {
-            status: 'OK',
-            message: 'WebSocket server is running',
+            status: socketIOReady ? 'OK' : 'DEGRADED',
+            message: socketIOReady ? 'WebSocket server is running' : 'Socket.IO not initialized',
             connections: this.countActiveUsers(),
-            uptime: this.getServerUptime(),
+            uptime: Math.floor(this.getServerUptime()),
+            socketIO: socketIOReady ? 'ready' : 'not initialized',
+            memory: {
+                heapUsed: Math.round(memoryUsage.heapUsed / 1024 / 1024), // MB
+                heapTotal: Math.round(memoryUsage.heapTotal / 1024 / 1024), // MB
+                rss: Math.round(memoryUsage.rss / 1024 / 1024) // MB
+            },
+            environment: process.env.NODE_ENV || 'unknown',
             timestamp: new Date().toISOString()
         };
     }
