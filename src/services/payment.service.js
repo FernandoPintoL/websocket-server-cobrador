@@ -15,7 +15,7 @@ class PaymentService {
         // Notificar al cobrador que recibió un pago
         if (cobrador) {
             const notificationData = notificationService.formatNotification(
-                `Has realizado un pago de $${payment?.amount ?? '?'} de ${client?.name || 'cliente'}`,
+                `Has realizado un pago de ${payment?.amount ?? '?'} Bs de ${client?.name || 'cliente'}`,
                 {
                     title: 'Pago realizado',
                     type: 'payment_received',
@@ -29,7 +29,7 @@ class PaymentService {
         // Notificar al manager sobre el pago recibido por su cobrador
         if (manager) {
             const notificationData = notificationService.formatNotification(
-                `El cobrador ${cobrador?.name || 'cobrador'} recibió un pago de $${payment?.amount ?? '?'} de ${client?.name || 'cliente'}`,
+                `El cobrador ${cobrador?.name || 'cobrador'} recibió un pago de ${payment?.amount ?? '?'} Bs de ${client?.name || 'cliente'}`,
                 {
                     title: 'Pago de cobrador recibido',
                     type: 'cobrador_payment_received',
