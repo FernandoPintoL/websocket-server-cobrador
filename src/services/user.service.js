@@ -43,7 +43,7 @@ class UserService {
 
         return {
             status: socketIOReady ? 'OK' : 'DEGRADED',
-            message: socketIOReady ? 'WebSocket server is running' : 'Socket.IO not initialized',
+            message: socketIOReady ? 'WebSocket server esta corriendo' : 'Socket.IO no inicializado',
             connections: this.countActiveUsers(),
             uptime: Math.floor(this.getServerUptime()),
             socketIO: socketIOReady ? 'ready' : 'not initialized',
@@ -52,7 +52,7 @@ class UserService {
                 heapTotal: Math.round(memoryUsage.heapTotal / 1024 / 1024), // MB
                 rss: Math.round(memoryUsage.rss / 1024 / 1024) // MB
             },
-            environment: process.env.NODE_ENV || 'unknown',
+            environment: process.env.NODE_ENV || 'desconocido',
             timestamp: new Date().toISOString()
         };
     }

@@ -160,7 +160,7 @@ class CreditService {
             case 'requires_attention':
                 return this.handleCreditRequiresAttention(credit, cobrador);
             default:
-                console.log(`⚠️ Unknown credit action: ${action}`);
+                console.log(`⚠️ Acción de crédito desconocida: ${action}`);
                 return false;
         }
     }

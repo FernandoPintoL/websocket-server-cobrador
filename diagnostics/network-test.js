@@ -53,6 +53,7 @@ async function checkFirewallRules() {
             console.log(`✅ Regla de firewall encontrada para el puerto ${PORT}`);
         }
     } catch (error) {
+        console.log(error);
         console.log(`⚠️  No se pudo verificar firewall automaticamente`);
         console.log(`\n🔧 SOLUCIÓN MANUAL: Ejecuta como Administrador:`);
         console.log(`netsh advfirewall firewall add rule name="WebSocket ${PORT}" dir=in action=allow protocol=TCP localport=${PORT}`);

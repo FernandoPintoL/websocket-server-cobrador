@@ -13,7 +13,7 @@ export const ensureBackend = (req, res, next) => {
     if (!process.env.WS_SECRET || secret !== process.env.WS_SECRET) {
         return res.status(401).json({
             success: false,
-            error: 'Unauthorized: backend only'
+            error: 'No autorizado: solo backend'
         });
     }
 

@@ -87,7 +87,7 @@ class SocketController {
         const { action, creditId, targetUserId, credit, userType, message } = data;
         const user = activeUsersRepository.getUserBySocketId(socket.id);
 
-        console.log(`🏦 Credit lifecycle event: ${action}`, {
+        console.log(`🏦 Evento del ciclo de vida del crédito: ${action}`, {
             creditId,
             from: user?.userName,
             targetUserId
@@ -105,7 +105,7 @@ class SocketController {
         // Enviar a usuario específico si corresponde
         if (targetUserId) {
             socketRepository.emitToUser(targetUserId, 'credit_lifecycle_update', notificationData);
-            console.log(`📨 Credit lifecycle sent to user ${targetUserId}`);
+            console.log(`📨 Ciclo de crédito enviado al usuario: ${targetUserId}`);
         }
 
         // Enviar a grupos según el tipo de acción
@@ -146,13 +146,13 @@ class SocketController {
 
         if (targetUserId) {
             socketRepository.emitToUser(targetUserId, 'new_credit_notification', payload);
-            console.log(`📨 credit_notification reenviado a user_${targetUserId}`);
+            console.log(`📨 Notificación de crédito reenviada al usuario: ${targetUserId}`);
         } else if (userType) {
             socketRepository.emitToRoom(`${userType}s`, 'new_credit_notification', payload);
-            console.log(`📨 credit_notification reenviado a grupo ${userType}s`);
+            console.log(`📨 Notificación de crédito reenviada al grupo: ${userType}s`);
         } else {
             socketRepository.emitToAll('new_credit_notification', payload);
-            console.log(`📨 credit_notification broadcast`);
+            console.log(`📨 Notificación de crédito broadcast`);
         }
     }
 
@@ -175,7 +175,7 @@ class SocketController {
             socketRepository.emitToUser(payload.cobradorId, 'payment_received', payload);
         }
         socketRepository.emitToRoom('managers', 'cobrador_payment_received', payload);
-        console.log(`💰 payment_update reenviado (cobrador ${payload.cobradorId ?? 'N/A'})`);
+        console.log(`💰 Pago notificado correctamente (cobrador ${payload.cobradorId ?? 'N/A'})`);
     }
 
     // Manejar notificación de ruta
@@ -186,7 +186,7 @@ class SocketController {
         };
         socketRepository.emitToRoom('managers', 'route_updated', payload);
         socket.emit('route_updated', payload);
-        console.log('🛣️ route_notification reenviado');
+        console.log(`🛣️ Notificación de ruta reenviada`);
     }
 
     // Manejar envío de mensaje

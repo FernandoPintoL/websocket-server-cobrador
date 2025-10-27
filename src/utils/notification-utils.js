@@ -25,7 +25,7 @@ export function notifyUser(io, userId, event, data) {
     if (!userId) return false;
 
     io.to(`user_${userId}`).emit(event, data);
-    console.log(`📨 Notification sent to user ${userId}: ${event}`);
+    console.log(`📨 Notificacion enviada a ${userId}: ${event}`);
     return true;
 }
 
@@ -44,7 +44,7 @@ export function notifyUserType(io, userType, event, data) {
     const room = userType.endsWith('s') ? userType : userType + 's';
 
     io.to(room).emit(event, data);
-    console.log(`📢 Notification sent to all ${userType}s: ${event}`);
+    console.log(`📢 Notificacion enviada a todos los ${userType}s: ${event}`);
     return true;
 }
 
@@ -56,7 +56,7 @@ export function notifyUserType(io, userType, event, data) {
  */
 export function notifyAll(io, event, data) {
     io.emit(event, data);
-    console.log(`📢 Broadcast notification sent: ${event}`);
+    console.log(`📢 Notificacion enviada a todos los usuarios: ${event}`);
 }
 
 /**

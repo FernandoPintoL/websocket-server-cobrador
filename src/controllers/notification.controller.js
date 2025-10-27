@@ -13,7 +13,7 @@ class NotificationController {
             // Determinar los datos a enviar
             let notificationData = data || notification || {};
 
-            console.log('📡 Received notification from external source:', eventName);
+            console.log('📡 Recibida notificación de fuente externa:', eventName);
 
             let notificationSent = false;
 
@@ -34,14 +34,14 @@ class NotificationController {
 
             res.json({
                 success: true,
-                message: 'Notification sent',
+                message: 'Notificacion enviada correctamente',
                 event: eventName,
                 target: userId || data?.user_id
                     ? `user ${userId || data.user_id}`
                     : (userType ? `all ${userType}s` : 'all users')
             });
         } catch (error) {
-            console.error('Error sending notification:', error);
+            console.error('Error notificando:', error);
             res.status(500).json({
                 success: false,
                 error: error.message

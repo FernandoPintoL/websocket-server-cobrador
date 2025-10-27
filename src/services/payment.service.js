@@ -3,7 +3,7 @@ import notificationService from './notification.service.js';
 class PaymentService {
     // Procesar notificación de pago
     processPaymentNotification(payment, cobrador, manager, client) {
-        console.log(`💰 Payment notification received`, {
+        console.log(`💰 Notificación de pago recibida`, {
             paymentId: payment?.id,
             amount: payment?.amount,
             cobradorId: cobrador?.id,

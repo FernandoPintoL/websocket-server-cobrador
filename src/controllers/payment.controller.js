@@ -15,12 +15,12 @@ class PaymentController {
 
             res.json({
                 success: true,
-                message: 'Payment notification processed',
+                message: 'Pago notificado correctamente',
                 paymentId: payment?.id,
                 sent: notificationSent
             });
         } catch (error) {
-            console.error('Error processing payment notification:', error);
+            console.error('Error notificando pago:', error);
             res.status(500).json({
                 success: false,
                 error: error.message

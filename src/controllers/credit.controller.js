@@ -15,13 +15,13 @@ class CreditController {
 
             res.json({
                 success: true,
-                message: 'Credit notification processed',
+                message: 'Credito notificado correctamente',
                 action: action,
                 creditId: credit?.id,
                 sent: notificationSent
             });
         } catch (error) {
-            console.error('Error processing credit notification:', error);
+            console.error('Error notificando credito:', error);
             res.status(500).json({
                 success: false,
                 error: error.message

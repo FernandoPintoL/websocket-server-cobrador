@@ -12,7 +12,7 @@ class SocketRepository {
     // Emitir a un usuario específico
     emitToUser(userId, event, data) {
         if (!this.io) {
-            console.error('Socket.IO not initialized');
+            console.error('Socket.IO no inicializado');
             return false;
         }
         // Normalizar userId a string para consistencia
@@ -24,7 +24,7 @@ class SocketRepository {
     // Emitir a una sala/grupo
     emitToRoom(room, event, data) {
         if (!this.io) {
-            console.error('Socket.IO not initialized');
+            console.error('Socket.IO no inicializado');
             return false;
         }
         this.io.to(room).emit(event, data);
@@ -34,7 +34,7 @@ class SocketRepository {
     // Emitir a todos
     emitToAll(event, data) {
         if (!this.io) {
-            console.error('Socket.IO not initialized');
+            console.error('Socket.IO no inicializado');
             return false;
         }
         this.io.emit(event, data);
