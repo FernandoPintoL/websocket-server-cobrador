@@ -2,6 +2,7 @@ import express from 'express';
 import notificationController from '../controllers/notification.controller.js';
 import creditController from '../controllers/credit.controller.js';
 import paymentController from '../controllers/payment.controller.js';
+import cashBalanceController from '../controllers/cash-balance.controller.js';
 import { ensureBackend } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
@@ -14,5 +15,8 @@ router.post('/credit-notification', ensureBackend, creditController.handleCredit
 
 // API específica para notificaciones de pagos
 router.post('/payment-notification', ensureBackend, paymentController.handlePaymentNotification);
+
+// API específica para notificaciones de cajas
+router.post('/cash-balance-notification', ensureBackend, cashBalanceController.handleCashBalanceNotification);
 
 export default router;
